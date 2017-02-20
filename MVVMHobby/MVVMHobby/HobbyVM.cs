@@ -8,6 +8,8 @@ using System.Windows.Media.Imaging;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight.Command;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace MVVMHobby.ViewModel
 {
@@ -31,7 +33,8 @@ namespace MVVMHobby.ViewModel
             set
             {
                 Hobby.Activiteit = value;
-            RaisePropertyChanged("Activiteit"};
+                RaisePropertyChanged("Activiteit");
+                    }
         }
 
 
@@ -55,6 +58,7 @@ namespace MVVMHobby.ViewModel
 
     public class HobbyLijstVM : ViewModelBase
     {
+        View.ImageView groteView;
 
         private ObservableCollection<HobbyVM> hobbyLijst = new ObservableCollection<HobbyVM>() ;
 
@@ -90,24 +94,51 @@ namespace MVVMHobby.ViewModel
             { return new RelayCommand<RoutedEventArgs>(Verwijder); }
         }
 
-        public HobbyLijstVM()
+        public RelayCommand<MouseEventArgs> MouseDownCommand
         {
-            HobbyLijst.Add(new HobbyVM(new Model.Hobby("sport","atletiek",new BitmapImage(new Uri("Images/atletiek.jpg")))));
-            HobbyLijst.Add(new HobbyVM(new Model.Hobby("sport", "basketbal", new BitmapImage(new Uri("Images/basketbal.jpg")))));
-            HobbyLijst.Add(new HobbyVM(new Model.Hobby("muziek", "drum", new BitmapImage(new Uri("Images/drum.jpg")))));
-            HobbyLijst.Add(new HobbyVM(new Model.Hobby("muziek", "gitaar", new BitmapImage(new Uri("Images/gitaar.jpg")))));
-            HobbyLijst.Add(new HobbyVM(new Model.Hobby("muziek", "piano", new BitmapImage(new Uri("Images/piano.jpg")))));
-            HobbyLijst.Add(new HobbyVM(new Model.Hobby("sport", "tennis", new BitmapImage(new Uri("Images/tennis.jpg")))));
-            HobbyLijst.Add(new HobbyVM(new Model.Hobby("muziek", "trompet", new BitmapImage(new Uri("Images/trompet.jpg")))));
-            HobbyLijst.Add(new HobbyVM(new Model.Hobby("sport", "turnen", new BitmapImage(new Uri("Images/turnen.jpg")))));
-            HobbyLijst.Add(new HobbyVM(new Model.Hobby("sport", "voetbal", new BitmapImage(new Uri("Images/voetbal.jpg")))));
+            get
+            { return new RelayCommand<MouseEventArgs>(MuisIngedrukt); }
+        }
 
-
+        public RelayCommand<MouseEventArgs> MouseUpCommand
+        {
+            get { return new RelayCommand<MouseEventArgs>(MuisLosgelaten); }
         }
 
         private void Verwijder(RoutedEventArgs e)
         {
             HobbyLijst.Remove(SelectedHobby);
         }
+
+        private void MuisIngedrukt(MouseEventArgs e)
+        {
+            Image tg = (Image)e.OriginalSource;
+            groteView = new View.ImageView();
+            groteView.GroteImage.Source = tg.Source;
+            groteView.Show();
+        }
+
+        private void MuisLosgelaten(MouseEventArgs e)
+        {
+            if (groteView != null)
+            { groteView.Close(); }
+            groteView = null;
+        }
+        public HobbyLijstVM()
+        {
+            HobbyLijst.Add(new HobbyVM(new Model.Hobby("sport","atletiek",new BitmapImage(new Uri("pack://application:,,,/Images/atletiek.jpg", UriKind.Absolute)))));
+            HobbyLijst.Add(new HobbyVM(new Model.Hobby("sport", "basketbal", new BitmapImage(new Uri(@"Images/basketbal.jpg", UriKind.Relative)))));
+            HobbyLijst.Add(new HobbyVM(new Model.Hobby("muziek", "drum", new BitmapImage(new Uri(@"Images/drum.jpg", UriKind.Relative)))));
+            HobbyLijst.Add(new HobbyVM(new Model.Hobby("muziek", "gitaar", new BitmapImage(new Uri(@"Images/gitaar.jpg", UriKind.Relative)))));
+            HobbyLijst.Add(new HobbyVM(new Model.Hobby("muziek", "piano", new BitmapImage(new Uri(@"Images/piano.jpg", UriKind.Relative)))));
+            HobbyLijst.Add(new HobbyVM(new Model.Hobby("sport", "tennis", new BitmapImage(new Uri(@"Images/tennis.jpg", UriKind.Relative)))));
+            HobbyLijst.Add(new HobbyVM(new Model.Hobby("muziek", "trompet", new BitmapImage(new Uri(@"Images/trompet.jpg", UriKind.Relative)))));
+            HobbyLijst.Add(new HobbyVM(new Model.Hobby("sport", "turnen", new BitmapImage(new Uri(@"Images/turnen.jpg", UriKind.Relative)))));
+            HobbyLijst.Add(new HobbyVM(new Model.Hobby("sport", "voetbal", new BitmapImage(new Uri(@"Images/voetbal.jpg", UriKind.Relative)))));
+
+
+        }
+
+
     }
 }

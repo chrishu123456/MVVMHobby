@@ -13,5 +13,14 @@ namespace MVVMHobby
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            ViewModel.HobbyLijstVM mijnhobbies = new ViewModel.HobbyLijstVM();
+            View.HobbyLijstView hlv = new View.HobbyLijstView();
+            hlv.DataContext = mijnhobbies;
+            hlv.Show();
+        }
+
     }
 }
