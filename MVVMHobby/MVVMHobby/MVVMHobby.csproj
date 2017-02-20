@@ -75,6 +75,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Hobby.cs" />
+    <Compile Include="HobbyVM.cs" />
     <Compile Include="View\HobbyLijstView.xaml.cs">
       <DependentUpon>HobbyLijstView.xaml</DependentUpon>
     </Compile>
